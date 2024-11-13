@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Detail</title>
+</head>
+<body>
+    <h1>Patient Details</h1>
+
+    {% if data %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Employer Category</th>
+                <th>Diabetic</th>
+                <th>Over_weight</th>
+                <th>Blood_Pressure</th>
+                <th>Smoker</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ data['Patient_ID'] }}</td>
+                <td>{{ data['Age'] }}</td>
+                <td>{{ data['Gender'] }}</td>
+                <td>{{ data['Employer_Category'] }}</td>
+                <td>{{ data['Diabetic'] }}</td>
+                <td>{{ data['Over_Weight'] }}</td>
+                <td>{{ data['Blood_Pressure'] }}</td>
+                <td>{{ data['Smoker'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+        <p>No patient data found for the given ID.</p>
+    {% endif %}
+
+    <!-- Display Profile Picture -->
+    {% if profile_pic %}
+        <h3>Profile Picture</h3>
+        <img src="data:image/png;base64,{{ profile_pic }}" alt="Profile Picture">    {% else %}
+        <p>Profile picture</p>
+    {% endif %}
+    
+    <h3>Prescription</h3>
+    <p>{{ prescription }}</p>
+
+    {% if user_role == 'Senior' %}
+        <h3>Update Prescription</h3>
+        <form action="{{ url_for('update_prescription') }}" method="POST">
+            <input type="hidden" name="patient_id" value="{{ patient['patient_id'] }}">
+            <textarea name="prescription" rows="4" cols="50">{{ prescription }}</textarea><br><br>
+            <input type="submit" value="Save Prescription">
+        </form>
+    {% else %}
+    {% endif %}
+
+    <br><br>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
